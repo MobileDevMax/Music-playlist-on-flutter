@@ -1,0 +1,86 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MusicPlaylistApp());
+}
+
+class MusicPlaylistApp extends StatelessWidget {
+  const MusicPlaylistApp({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Music playlist',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: const PlaylistScreen(),
+    );
+  }
+}
+
+class PlaylistScreen extends StatelessWidget {
+  const PlaylistScreen({Key? key}) : super(key: key);
+
+  final List<Playlist> playlists = const [
+    Playlist(title: 'Playlist 1', songs: ['Song A', 'Song B', 'Song C']),
+    Playlist(title: 'Playlist 2', songs: ['Song D', 'Song E', 'Song F']),
+    Playlist(title: 'Playlist 3', songs: ['Песня G', 'Песня H', 'Песня I']),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Music playlist'),
+      ),
+      body: ListView.builder(
+        itemCount: playlists.length,
+        itemBuilder: (context, index) {
+          final playlist = playlists[index];
+          return ListTile(
+            title: Text(playlist.title),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SongScreen(playlist: playlist),
+                ),
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+}
+
+class SongScreen extends StatelessWidget {
+  final Playlist playlist;
+
+  const SongScreen({Key? key, required this.playlist}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(playlist.title),
+      ),
+      body: ListView.builder(
+        itemCount: playlist.songs.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Text(playlist.songs[index]),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class Playlist {
+  final String title;
+  final List<String> songs;
+
+  const Playlist({required this.title, required this.songs});
+}
